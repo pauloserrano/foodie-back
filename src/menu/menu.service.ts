@@ -9,14 +9,11 @@ export class MenuService {
   constructor(private prisma: PrismaService) {}
 
   async getAll() {
-    const menus = await this.prisma.menu.findMany({})
-
-    return menus
+    return await this.prisma.menu.findMany({})
   }
 
   async getCurrent() {
     const hour = new Date().getHours()
-
     if (hour > 6 && hour < 18){
       return await this.prisma.menu.findFirst({
         where: { isDaytime: true }
@@ -29,10 +26,7 @@ export class MenuService {
   }
 
   async create(dto: CreateMenuDto) {
-    const currentMenu = await this.prisma.menu.findFirst({
-      where: { isDaytime: dto.isDaytime }
-    })
-
+    const currentMenu = await this.prisma.menu.findFirst({ where: { isDaytime: dto.isDaytime } })
     if (currentMenu){
       throw new BadRequestException("The current time of day is already occupied.")
     }
@@ -42,13 +36,11 @@ export class MenuService {
 
   async update(id: Menu["id"], dto: UpdateMenuDto) {
     const isValidId = isValidObjectId(id)
-
     if (!isValidId) {
       throw new BadRequestException("Invalid ID")
     }
 
     const menu = await this.prisma.menu.findFirst({ where: { id } })
-
     if (!menu) {
       throw new NotFoundException("Menu not found")
     }
@@ -61,13 +53,11 @@ export class MenuService {
 
   async delete(id: Menu["id"]) {
     const isValidId = isValidObjectId(id)
-
     if (!isValidId) {
       throw new BadRequestException("Invalid ID")
     }
 
     const menu = await this.prisma.menu.findFirst({ where: { id } })
-
     if (!menu) {
       throw new NotFoundException("Menu not found")
     }
