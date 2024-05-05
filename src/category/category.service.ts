@@ -11,6 +11,23 @@ export class CategoryService {
   async getAll() {
     return await this.prisma.category.findMany({})
   }
+
+  async getById(id: string) {
+    const isValidId = isValidObjectId(id)
+    if (!isValidId) {
+      throw new BadRequestException("Invalid ID")
+    }
+
+    const category = await this.prisma.category.findFirst({ 
+      where: { id },
+      include: { products: true }
+    })
+    if (!category) {
+      throw new NotFoundException("Category not found")
+    }
+    
+    return category
+  }
   
   async create(dto: CreateCategoryDto) {
     return await this.prisma.category.create({ data: { ...dto } })

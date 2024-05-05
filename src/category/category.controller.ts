@@ -12,6 +12,11 @@ export class CategoryController {
     return this.categoryService.getAll()
   }
 
+  @Get(":id")
+  getById(@Param("id") id) {
+    return this.categoryService.getById(id)
+  }
+
   @Post()
   create(@Body() dto: CreateCategoryDto) {
     return this.categoryService.create(dto)
