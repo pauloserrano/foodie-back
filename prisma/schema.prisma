@@ -17,17 +17,54 @@ model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  email     String
+
+  email     String  @unique
   hash      String
   firstName String?
   lastName  String?
+
+  @@map("users")
 }
 
-model Bookmark {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  title       String
+model Product {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  price       Int
+  imageSrc    String
+  description String
+
+  menuId String @db.ObjectId
+  menu   Menu   @relation(fields: [menuId], references: [id])
+
+  categoryId String   @db.ObjectId
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@map("products")
+}
+
+model Menu {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
   description String?
-  link        String
+  products    Product[]
+
+  @@map("menus")
+}
+
+model Category {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  description String?
+  products    Product[]
+
+  @@map("categories")
 }
