@@ -30,9 +30,3 @@ export class UpdateMenuDto {
   @IsOptional()
   isDaytime?: boolean
 }
-
-export class DeleteMenuDto {
-  @IsString()
-  @IsNotEmpty()
-  id: string
-}
