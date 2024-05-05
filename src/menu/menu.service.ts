@@ -16,12 +16,14 @@ export class MenuService {
     const hour = new Date().getHours()
     if (hour > 6 && hour < 18){
       return await this.prisma.menu.findFirst({
-        where: { isDaytime: true }
+        where: { isDaytime: true },
+        include: { products: true }
       })
     }
     
     return await this.prisma.menu.findFirst({
-      where: { isDaytime: false }
+      where: { isDaytime: false },
+      include: { products: true }
     })
   }
 
