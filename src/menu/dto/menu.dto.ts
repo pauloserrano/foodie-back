@@ -1,13 +1,38 @@
+import { IsNotEmpty, IsString, IsOptional, IsBoolean } from "class-validator"
+
 export class CreateMenuDto {
-  readonly name: string
-  readonly description?: string
+  @IsString()
+  @IsNotEmpty()
+  name: string
+
+  @IsString()
+  @IsOptional()
+  description?: string
+
+  @IsBoolean()
+  @IsNotEmpty()
+  isDaytime: boolean
 }
 
 export class UpdateMenuDto {
-  readonly name?: string
-  readonly description?: string
+  @IsNotEmpty()
+  @IsString()
+  @IsOptional()
+  name?: string
+
+  @IsNotEmpty()
+  @IsString()
+  @IsOptional()
+  description?: string
+
+  @IsNotEmpty()
+  @IsBoolean()
+  @IsOptional()
+  isDaytime?: boolean
 }
 
 export class DeleteMenuDto {
-  readonly id: string
+  @IsString()
+  @IsNotEmpty()
+  id: string
 }

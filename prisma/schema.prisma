@@ -52,6 +52,7 @@ model Menu {
 
   name        String
   description String?
+  isDaytime   Boolean
   products    Product[]
 
   @@map("menus")
