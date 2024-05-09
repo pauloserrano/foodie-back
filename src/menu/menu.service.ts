@@ -2,11 +2,11 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { Menu } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateMenuDto, UpdateMenuDto } from './dto';
-import { isValidObjectId } from 'src/utils/index';
+import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
 export class MenuService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private utils: UtilsService) {}
 
   async getAll() {
     return await this.prisma.menu.findMany({})
@@ -37,7 +37,7 @@ export class MenuService {
   }
 
   async update(id: Menu["id"], dto: UpdateMenuDto) {
-    const isValidId = isValidObjectId(id)
+    const isValidId = this.utils.isValidObjectId(id)
     if (!isValidId) {
       throw new BadRequestException("Invalid ID")
     }
@@ -54,7 +54,7 @@ export class MenuService {
   }
 
   async delete(id: Menu["id"]) {
-    const isValidId = isValidObjectId(id)
+    const isValidId = this.utils.isValidObjectId(id)
     if (!isValidId) {
       throw new BadRequestException("Invalid ID")
     }

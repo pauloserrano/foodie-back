@@ -1,17 +1,22 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProductDto, UpdateProductDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { isValidObjectId } from 'src/utils/index';
+import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
 export class ProductService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private utils: UtilsService) {}
 
   async getAll() {
     return await this.prisma.product.findMany({})
   }
 
   async getById(id: string) {
+    const isValidId = this.utils.isValidObjectId(id)
+    if (!isValidId) {
+      throw new BadRequestException("Invalid ID")
+    }
+
     const product = await this.prisma.product.findFirst({ where: { id }})
     if (!product){
       throw new NotFoundException()
@@ -21,7 +26,7 @@ export class ProductService {
   }
   
   async create(dto: CreateProductDto) {
-    const isMenuIdValid = isValidObjectId(dto.menuId)
+    const isMenuIdValid = this.utils.isValidObjectId(dto.menuId)
     if (!isMenuIdValid){
       throw new BadRequestException("Invalid MenuId")
     }
@@ -31,7 +36,7 @@ export class ProductService {
       throw new NotFoundException("MenuId Not Found")
     }
 
-    const isCategoryIdValid = isValidObjectId(dto.categoryId)
+    const isCategoryIdValid = this.utils.isValidObjectId(dto.categoryId)
     if (!isCategoryIdValid){
       throw new BadRequestException("Invalid CategoryId")
     }
@@ -46,7 +51,7 @@ export class ProductService {
 
   async update(id: string, dto: UpdateProductDto) {
     if (dto.menuId) {
-      const isMenuIdValid = isValidObjectId(dto.menuId)
+      const isMenuIdValid = this.utils.isValidObjectId(dto.menuId)
       if (!isMenuIdValid){
         throw new BadRequestException("Invalid MenuId")
       }
@@ -58,7 +63,7 @@ export class ProductService {
     }
 
     if (dto.categoryId) {
-      const isCategoryIdValid = isValidObjectId(dto.categoryId)
+      const isCategoryIdValid = this.utils.isValidObjectId(dto.categoryId)
       if (!isCategoryIdValid){
         throw new BadRequestException("Invalid CategoryId")
       }
@@ -76,7 +81,7 @@ export class ProductService {
   }
 
   async delete(id: string) {
-    const isValidId = isValidObjectId(id)
+    const isValidId = this.utils.isValidObjectId(id)
     if (!isValidId) {
       throw new BadRequestException("Invalid ID")
     }

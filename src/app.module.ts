@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ProductModule } from './product/product.module';
 import { CategoryModule } from './category/category.module';
 import { MenuModule } from './menu/menu.module';
+import { UtilsModule } from './utils/utils.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { MenuModule } from './menu/menu.module';
     AuthModule, 
     UserModule, 
     PrismaModule,
+    UtilsModule,
     ProductModule,
     CategoryModule,
     MenuModule,

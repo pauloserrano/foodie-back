@@ -2,18 +2,18 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { Category } from '@prisma/client';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { isValidObjectId } from 'src/utils/index';
+import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
 export class CategoryService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private utils: UtilsService) {}
 
   async getAll() {
     return await this.prisma.category.findMany({})
   }
 
   async getById(id: string) {
-    const isValidId = isValidObjectId(id)
+    const isValidId = this.utils.isValidObjectId(id)
     if (!isValidId) {
       throw new BadRequestException("Invalid ID")
     }
@@ -34,7 +34,7 @@ export class CategoryService {
   }
 
   async update(id: Category["id"], dto: UpdateCategoryDto) {
-    const isValidId = isValidObjectId(id)
+    const isValidId = this.utils.isValidObjectId(id)
 
     if (!isValidId) {
       throw new BadRequestException("Invalid ID")
@@ -50,7 +50,7 @@ export class CategoryService {
   }
 
   async delete(id: Category["id"]) {
-    const isValidId = isValidObjectId(id)
+    const isValidId = this.utils.isValidObjectId(id)
 
     if (!isValidId) {
       throw new BadRequestException("Invalid ID")
