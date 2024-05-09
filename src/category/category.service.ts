@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { Category } from '@prisma/client';
 import { CreateCategoryDto, UpdateCategoryDto } from './dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { isValidObjectId } from 'src/utils';
+import { isValidObjectId } from 'src/utils/index';
 
 @Injectable()
 export class CategoryService {

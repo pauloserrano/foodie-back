@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { Menu } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateMenuDto, UpdateMenuDto } from './dto';
-import { isValidObjectId } from 'src/utils';
+import { isValidObjectId } from 'src/utils/index';
 
 @Injectable()
 export class MenuService {
